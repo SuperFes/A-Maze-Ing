@@ -57,7 +57,8 @@ class Maze:
         for celly in self._cells:
             for cell in celly:
                 cell.draw()
-                self._animate(sleep_time=0.001)
+
+            self._animate(sleep_time=0.001)
 
     def _animate(self, sleep_time = 0.1):
         if self.__win is None:
@@ -94,7 +95,7 @@ class Maze:
 
             next_cell = random.choice(neighbors)
             self._remove_wall((y, x), next_cell)
-            self._animate(0.0025)
+            self._animate(0.000025)
 
             self._stack.append(next_cell)
 
@@ -203,4 +204,4 @@ class Maze:
             nn = list(map(int, next_cell.split(":")))
 
             self._cells[nn[0]][nn[1]].draw_move(self._cells[current[0]][current[1]])
-            self._animate(0.0125)
+            self._animate(0.0005)

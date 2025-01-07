@@ -2,13 +2,16 @@ from window import Window
 from maze import Maze
 
 def main():
-    win = Window(1024, 768)
+    width = 1980
+    height = 1080
 
-    cell_size = 16
-    cols = 1024 // cell_size - 1
-    rows = 768 // cell_size - 1
+    win = Window(width, height)
 
-    maze = Maze(8, 8, rows, cols, cell_size, cell_size, win)
+    cell_size = 8
+    cols = (width // cell_size) - 1
+    rows = (height // cell_size) - 1
+
+    maze = Maze(cell_size // 2, cell_size // 2, rows, cols, cell_size, cell_size, win)
 
     maze.solve()
 
