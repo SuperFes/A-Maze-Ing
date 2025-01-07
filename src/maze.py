@@ -14,7 +14,7 @@ class Maze:
         cell_size_y,
         win = None
     ):
-        random.seed(0) # time.thread_time())
+        random.seed(time.thread_time())
 
         self.__x1 = x1
         self.__y1 = y1
@@ -57,7 +57,7 @@ class Maze:
         for celly in self._cells:
             for cell in celly:
                 cell.draw()
-                self._animate(sleep_time=0.01)
+                self._animate(sleep_time=0.001)
 
     def _animate(self, sleep_time = 0.1):
         if self.__win is None:
@@ -94,7 +94,7 @@ class Maze:
 
             next_cell = random.choice(neighbors)
             self._remove_wall((y, x), next_cell)
-            self._animate(0.0125)
+            self._animate(0.0025)
 
             self._stack.append(next_cell)
 
@@ -169,27 +169,38 @@ class Maze:
         if self._solved:
             return self._solved
 
-        return self._solve_r(0, 0)
+        start = "0:0"
 
-    def _solve_r(self, start_x, start_y):
-        if start_x == self.__num_cols - 1 and start_y == self.__num_rows - 1:
-            return True
+        self._stack = [start]
+        visited = set()
 
-        if self._cells[start_y][start_x]._visited:
-            return False
+        while len(self._stack) > 0:
+            popped = self._stack[-1]
 
-        for neighbor in self.__graph[f"{start_y}:{start_x}"]:
-            ny, nx = neighbor
+            current = list(map(int, popped.split(":")))
 
-            self._cells[start_y][start_x].draw_move(self._cells[ny][nx])
+            visited.add(popped)
 
-            self._animate(0.05)
-
-            if self._solve_r(nx, ny):
+            if current[0] == self.__num_rows - 1 and current[1] == self.__num_cols - 1:
+                self._solved = True
                 return True
 
-            self._cells[start_y][start_x].draw_move(self._cells[ny][nx], undo=True)
+            neighbors = self.__graph[popped]
+            unvisited_neighbors = []
 
-            self._animate(0.05)
+            for n in neighbors:
+                if f"{n[0]}:{n[1]}" not in visited:
+                    unvisited_neighbors.append(f"{n[0]}:{n[1]}")
 
-        return False
+            if len(unvisited_neighbors) == 0:
+                self._stack.pop()
+                continue
+
+            next_cell = random.choice(unvisited_neighbors)
+
+            self._stack.append(next_cell)
+
+            nn = list(map(int, next_cell.split(":")))
+
+            self._cells[nn[0]][nn[1]].draw_move(self._cells[current[0]][current[1]])
+            self._animate(0.0125)
