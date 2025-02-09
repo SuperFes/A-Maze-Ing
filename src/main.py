@@ -2,8 +2,8 @@ from window import Window
 from maze import Maze
 
 def main():
-    width = 1980
-    height = 1080
+    width = 2560
+    height = 1440
 
     win = Window(width, height)
 

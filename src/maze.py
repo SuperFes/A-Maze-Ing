@@ -77,6 +77,10 @@ class Maze:
         self._animate()
 
     def _break_walls_r(self):
+        count = 0
+        cells = self.__num_cols * self.__num_rows
+        total = count / cells
+
         self._cells[0][0]._visited = True
 
         self._stack.append((0, 0))
@@ -95,9 +99,31 @@ class Maze:
 
             next_cell = random.choice(neighbors)
             self._remove_wall((y, x), next_cell)
-            self._animate(0.000025)
+            count += 1
+
+            total = count / cells
+
+            if total < 0.59:
+                if count % 100 == 0:
+                    self._animate(0.00000025)
+            elif total < 0.69:
+                if count % 50 == 0:
+                    self._animate(0.00000025)
+            elif total < 0.79:
+                if count % 25 == 0:
+                    self._animate(0.00000025)
+            elif total < 0.89:
+                if count % 10 == 0:
+                    self._animate(0.00000025)
+            elif total < 0.99:
+                if count % 5 == 0:
+                    self._animate(0.00000025)
+            else:
+                self._animate(0.00000025)
 
             self._stack.append(next_cell)
+
+        self._animate(0.00000025)
 
     def _remove_wall(self, current, next_cell):
         y1, x1 = current
@@ -184,7 +210,7 @@ class Maze:
 
             if current[0] == self.__num_rows - 1 and current[1] == self.__num_cols - 1:
                 self._solved = True
-                return True
+                # return True
 
             neighbors = self.__graph[popped]
             unvisited_neighbors = []
