@@ -58,7 +58,7 @@ class Maze:
             for cell in celly:
                 cell.draw()
 
-            self._animate(sleep_time=0.001)
+        self._animate(sleep_time=0.001)
 
     def _animate(self, sleep_time = 0.1):
         if self.__win is None:
@@ -103,23 +103,23 @@ class Maze:
 
             total = count / cells
 
-            if total < 0.59:
+            if total < 0.90:
+                if count % 150 == 0:
+                    self._animate(0.00000025)
+            elif total < 0.925:
                 if count % 100 == 0:
                     self._animate(0.00000025)
-            elif total < 0.69:
+            elif total < 0.500:
                 if count % 50 == 0:
                     self._animate(0.00000025)
-            elif total < 0.79:
+            elif total < 0.975:
                 if count % 25 == 0:
                     self._animate(0.00000025)
-            elif total < 0.89:
-                if count % 10 == 0:
-                    self._animate(0.00000025)
-            elif total < 0.99:
-                if count % 5 == 0:
-                    self._animate(0.00000025)
             else:
-                self._animate(0.00000025)
+                if cells - count < 25:
+                    self._animate(0.00000025)
+                elif count % 10 == 0:
+                    self._animate(0.00000025)
 
             self._stack.append(next_cell)
 
@@ -230,4 +230,4 @@ class Maze:
             nn = list(map(int, next_cell.split(":")))
 
             self._cells[nn[0]][nn[1]].draw_move(self._cells[current[0]][current[1]])
-            self._animate(0.0005)
+            self._animate(0.00005)
